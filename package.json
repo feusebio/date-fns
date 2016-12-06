@@ -22,6 +22,8 @@
     "jsdoc-parse": "^1.1.1",
     "json-loader": "^0.5.3",
     "karma": "^1.3.0",
+    "karma-benchmark": "^0.6.0",
+    "karma-benchmark-reporter": "^0.1.1",
     "karma-cli": "^1.0.1",
     "karma-es5-shim": "0.0.4",
     "karma-mocha": "^1.3.0",
