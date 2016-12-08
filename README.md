@@ -36,6 +36,10 @@ Also, you can simply download the library from
 [See date-fns.org](https://date-fns.org/) for more details, API,
 and other docs.
 
+## FAQ
+
+TODO
+
 ## License
 
 [MIT © Sasha Koss](https://kossnocorp.mit-license.org/)
