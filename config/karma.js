@@ -1,7 +1,8 @@
 process.env.NODE_ENV = 'test'
 
-var fs = require('fs')
 var webpackConfig = require('./webpack')
+var countReporter = require('./_lib/count_reporter')
+var benchmarkJSONReporter = require('./_lib/benchmark_json_reporter')
 
 var sauceLabsLaunchers = {
   // TODO: See if Safari became more reliable
@@ -81,28 +82,6 @@ var sauceLabsLaunchers = {
   }
 }
 
-var countFilename = './tmp/tests_count.txt'
-
-function countReporter () {
-  this.onRunComplete = function (_, results) {
-    var runCount = results.success
-
-    fs.readFile(countFilename, {encoding: 'utf-8', flag: 'a+'}, function (err, data) {
-      if (err) {
-        throw err
-      }
-
-      var totalCount = (parseInt(data, 10) || 0) + runCount
-
-      fs.writeFile(countFilename, totalCount, 'utf-8', function (err) {
-        if (err) {
-          throw err
-        }
-      })
-    })
-  }
-}
-
 function config (config) {
   config.set({
     frameworks: getFrameworksConfig(),
@@ -151,7 +130,8 @@ function config (config) {
       'karma-webpack',
       'karma-benchmark',
       'karma-benchmark-reporter',
-      {'reporter:count': ['type', countReporter]}
+      {'reporter:count': ['type', countReporter]},
+      {'reporter:benchmark-json': ['type', benchmarkJSONReporter]}
     ],
 
     customLaunchers: process.env.TEST_CROSS_BROWSER ? sauceLabsLaunchers : {},
@@ -195,7 +175,7 @@ function getReportersConfig () {
   if (process.env.TEST_CROSS_BROWSER) {
     return ['dots', 'saucelabs', 'count']
   } else if (process.env.TEST_BENCHMARK) {
-    return ['benchmark']
+    return ['benchmark', 'benchmark-json']
   } else {
     return ['mocha', 'count']
   }
